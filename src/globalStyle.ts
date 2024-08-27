@@ -61,8 +61,8 @@ export const BoxContainer = styled.div`
     height: 100%;
     padding: 48px;
     background: rgba(255, 255, 255, 0.6); 
-    border-radius: 32px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 12px; 
+    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.4); 
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px);
 `

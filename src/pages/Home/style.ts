@@ -14,9 +14,9 @@ export const ContainerStyle = styled.div`
 
         @keyframes fadeIn {
         from {
-            opacity: 0;
-            
+            opacity: 0;    
         }
+
         to {
             opacity: 1;
         }
@@ -29,6 +29,5 @@ export const ContainerStyle = styled.div`
         width: 100%;
         max-width: 360px;
         justify-content: space-evenly;
-        
     }
 `
