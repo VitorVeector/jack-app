@@ -2,6 +2,7 @@ import { List, TextField } from "@mui/material"
 import { Content } from "./style"
 import { CustomButton as Button } from "../../components/Button"
 import { useState } from 'react'
+import { CardContainer } from "../../components/Card"
 
 export const Main = () => {
     const [titleInput, setTitleInput] = useState<string>('');
@@ -21,7 +22,7 @@ export const Main = () => {
                     onChange={e => {
                         setContentInput(e.target.value)
                     }} 
-                    className="inputContent" id="filled-hidden-label-normal" placeholder="insert your task content" multiline fullWidth />
+                    className="inputContent" color="secondary" id="filled-hidden-label-normal" placeholder="insert your task content" multiline fullWidth />
                 <Button className="btnInput" color="secondary" variant="contained">add task</Button>
             </div>
             <div className="contentArea">
@@ -32,7 +33,7 @@ export const Main = () => {
                         borderRadius: '12px',
                         position: 'relative',
                         overflow: 'auto',
-                        padding: '18px',
+                        padding: '14px',
                         maxHeight: 500,
                         '& ul': { padding: 0 },
                     }}
@@ -41,10 +42,7 @@ export const Main = () => {
                     {[0, 1, 2, 3, 4].map((sectionId) => (
                         <li key={`section-${sectionId}`}>
                             <ul>
-                                <div className="taskContent">
-                                    <h3>Teste</h3>
-                                    <p>Teste Teste</p>
-                                </div>
+                                <CardContainer title="Tarefa" content="Teste" finish={true}/>
                             </ul>
                         </li>
                     ))}

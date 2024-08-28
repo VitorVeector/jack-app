@@ -2,24 +2,25 @@ import React, { useState, ChangeEvent, FormEvent, FocusEvent } from 'react';
 import { TextField } from '@mui/material';
 import { CustomButton as Button } from '../../components/Button';
 import { Container } from './style';
+import { useNavigate } from 'react-router-dom';
 
-interface FormValues {
+interface IFormValues {
     email: string;
     password: string;
 }
 
-interface FormErrors {
+interface IFormErrors {
     email: string;
     password: string;
 }
 
 export const Login: React.FC = () => {
-    const [formValues, setFormValues] = useState<FormValues>({
+    const [formValues, setFormValues] = useState<IFormValues>({
         email: '',
         password: '',
     });
 
-    const [formErrors, setFormErrors] = useState<FormErrors>({
+    const [formErrors, setFormErrors] = useState<IFormErrors>({
         email: '',
         password: '',
     });
@@ -34,11 +35,11 @@ export const Login: React.FC = () => {
         return '';
     };
 
-    const handleChange = (field: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>): void => {
+    const handleChange = (field: keyof IFormValues) => (event: ChangeEvent<HTMLInputElement>): void => {
         setFormValues({ ...formValues, [field]: event.target.value });
     };
 
-    const handleBlur = (field: keyof FormValues) => (event: FocusEvent<HTMLInputElement>): void => {
+    const handleBlur = (field: keyof IFormValues) => (event: FocusEvent<HTMLInputElement>): void => {
         let error = '';
 
         switch (field) {
@@ -79,6 +80,8 @@ export const Login: React.FC = () => {
         );
     };
 
+    const navigate = useNavigate()
+
     return (
         <Container>
             <h3>login</h3>
@@ -96,6 +99,7 @@ export const Login: React.FC = () => {
                         required
                         fullWidth
                         margin="normal"
+                        color="secondary"
                     />
                     <TextField
                         label="password"
@@ -109,9 +113,12 @@ export const Login: React.FC = () => {
                         required
                         fullWidth
                         margin="normal"
+                        color="secondary"
                     />
                 </div>
-                <Button disabled={isFormInvalid()} className="btnSubmit" type="submit" variant="outlined" color="secondary" fullWidth>
+                <Button 
+                    onClick={() => navigate('/Main')}
+                    disabled={isFormInvalid()} className="btnSubmit" type="submit" variant="outlined" color="secondary" fullWidth>
                     Login
                 </Button>
             </form>

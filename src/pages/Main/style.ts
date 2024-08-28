@@ -25,18 +25,10 @@ export const Content = styled.div`
     }
 
     .contentArea{
-        .taskContent{
-            margin-bottom: 24px; 
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            background-color: red;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.6); 
-            border-radius: 12px; 
-            box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
+        li{
+            ul{ 
+                margin-bottom: 24px; 
+            }
         }
     }
 `

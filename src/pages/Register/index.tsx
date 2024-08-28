@@ -3,14 +3,14 @@ import { TextField } from '@mui/material';
 import { CustomButton as Button } from '../../components/Button';
 import { Container } from './style';
 
-interface FormValues {
+interface IFormValues {
     name: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-interface FormErrors {
+interface IFormErrors {
     name: string;
     email: string;
     password: string;
@@ -18,14 +18,14 @@ interface FormErrors {
 }
 
 export const Register: React.FC = () => {
-    const [formValues, setFormValues] = useState<FormValues>({
+    const [formValues, setFormValues] = useState<IFormValues>({
         name: '',
         email: '',
         password: '',
         confirmPassword: '',
     });
 
-    const [formErrors, setFormErrors] = useState<FormErrors>({
+    const [formErrors, setFormErrors] = useState<IFormErrors>({
         name: '',
         email: '',
         password: '',
@@ -34,7 +34,7 @@ export const Register: React.FC = () => {
 
     const validateName = (name: string): string => {
         if (!name) {
-            return 'Name is required';
+            return 'name is required';
         }
         return '';
     };
@@ -42,9 +42,9 @@ export const Register: React.FC = () => {
     const validateEmail = (email: string): string => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
-            return 'Email is required';
+            return 'email is required';
         } else if (!regex.test(email)) {
-            return 'Enter a valid email';
+            return 'enter a valid email';
         }
         return '';
     };
@@ -67,11 +67,11 @@ export const Register: React.FC = () => {
         return '';
     };
 
-    const handleChange = (field: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>): void => {
+    const handleChange = (field: keyof IFormValues) => (event: ChangeEvent<HTMLInputElement>): void => {
         setFormValues({ ...formValues, [field]: event.target.value });
     };
 
-    const handleBlur = (field: keyof FormValues) => (event: FocusEvent<HTMLInputElement>): void => {
+    const handleBlur = (field: keyof IFormValues) => (event: FocusEvent<HTMLInputElement>): void => {
         let error = '';
 
         switch (field) {
@@ -109,7 +109,7 @@ export const Register: React.FC = () => {
                 confirmPassword: confirmPasswordError,
             });
         } else {
-            console.log('Form submitted successfully');
+            console.log('form submitted successfully');
         }
     };
 
@@ -142,6 +142,7 @@ export const Register: React.FC = () => {
                     <TextField
                         label="email"
                         type="email"
+                        color="secondary"
                         className="input emailInput"
                         value={formValues.email}
                         onChange={handleChange('email')}
@@ -155,6 +156,7 @@ export const Register: React.FC = () => {
                     <TextField
                         label="password"
                         type="password"
+                        color="secondary"
                         className="input passwordInput"
                         value={formValues.password}
                         onChange={handleChange('password')}
@@ -168,6 +170,7 @@ export const Register: React.FC = () => {
                     <TextField
                         label="confirm your password"
                         type="password"
+                        color="secondary"
                         className="input confirmPasswordInput"
                         value={formValues.confirmPassword}
                         onChange={handleChange('confirmPassword')}
