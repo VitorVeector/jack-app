@@ -4,6 +4,7 @@ import { Home } from './pages/Home';
 import { ThemeProvider } from '@mui/material/styles'
 import { Main } from './pages/Main';
 import { Register } from './pages/Register/indext';
+import { Login } from './pages/Login';
 
 function App() {
     return (
@@ -15,7 +16,8 @@ function App() {
                     <BoxContainer>
                         {/* <Home /> */}
                         {/* <Main/> */}
-                        <Register/>
+                        {/* <Register/> */}
+                        <Login />
                     </BoxContainer>
                 </Container>
             </div>
