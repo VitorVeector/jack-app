@@ -3,6 +3,8 @@ import { TextField } from '@mui/material';
 import { CustomButton as Button } from '../../components/Button';
 import { Container } from './style';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../services/api';
+import { Label } from '@mui/icons-material';
 
 interface IFormValues {
     email: string;
@@ -15,6 +17,7 @@ interface IFormErrors {
 }
 
 export const Login: React.FC = () => {
+    const [reqError, setReqError] = useState<string | null>(null);
     const [formValues, setFormValues] = useState<IFormValues>({
         email: '',
         password: '',
@@ -58,7 +61,7 @@ export const Login: React.FC = () => {
         setFormErrors({ ...formErrors, [field]: error });
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
         const emailError = validateEmail(formValues.email);
         const passwordError = formValues.password ? '' : 'password is required';
@@ -69,7 +72,42 @@ export const Login: React.FC = () => {
                 password: passwordError,
             });
         } else {
-            console.log('login submitted successfully');
+            try {
+                await loginUser({
+                    username: formValues.email,
+                    password: formValues.password,
+                });
+const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+        event.preventDefault();
+        const emailError = validateEmail(formValues.email);
+        const passwordError = formValues.password ? '' : 'password is required';
+
+        if (emailError || passwordError) {
+            setFormErrors({
+                email: emailError,
+                password: passwordError,
+            });
+        } else {
+            try {
+                await loginUser({
+                    username: formValues.email,
+                    password: formValues.password,
+                });
+
+                navigate('/main');
+                console.log('user logged successfully');
+
+            } catch (error) {
+                setReqError('invalid credentials')
+            }
+        }
+    };
+                navigate('/main');
+                console.log('user logged successfully');
+
+            } catch (error) {
+                setReqError('invalid credentials')
+            }
         }
     };
 
@@ -117,10 +155,10 @@ export const Login: React.FC = () => {
                     />
                 </div>
                 <Button 
-                    onClick={() => navigate('/Main')}
-                    disabled={isFormInvalid()} className="btnSubmit" type="submit" variant="outlined" color="secondary" fullWidth>
+                    disabled={isFormInvalid()} className="btnSubmit" type="submit" variant='outlined' color="secondary" fullWidth>
                     Login
                 </Button>
+                {reqError && <span color='error' className="errorText">{reqError}</span>}
             </form>
         </Container>
     );

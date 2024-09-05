@@ -2,6 +2,8 @@ import React, { useState, ChangeEvent, FormEvent, FocusEvent } from 'react';
 import { TextField } from '@mui/material';
 import { CustomButton as Button } from '../../components/Button';
 import { Container } from './style';
+import { registerUser } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormValues {
     name: string;
@@ -18,6 +20,8 @@ interface IFormErrors {
 }
 
 export const Register: React.FC = () => {
+    const navigate = useNavigate()
+
     const [formValues, setFormValues] = useState<IFormValues>({
         name: '',
         email: '',
@@ -94,7 +98,7 @@ export const Register: React.FC = () => {
         setFormErrors({ ...formErrors, [field]: error });
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
         const nameError = validateName(formValues.name);
         const emailError = validateEmail(formValues.email);
@@ -109,7 +113,21 @@ export const Register: React.FC = () => {
                 confirmPassword: confirmPasswordError,
             });
         } else {
-            console.log('form submitted successfully');
+            try {
+                const username = formValues.email.split('@')[0];
+                console.log(username)
+
+                await registerUser({
+                    name: formValues.name,
+                    username: username,
+                    email: formValues.email,
+                    password: formValues.password,
+                });
+                navigate('/main');
+                console.log('User registered successfully');
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
