@@ -1,29 +1,76 @@
-import { List, TextField } from "@mui/material"
-import { Content } from "./style"
-import { CustomButton as Button } from "../../components/Button"
-import { useState } from 'react'
-import { CardContainer } from "../../components/Card"
+import { List, TextField } from "@mui/material";
+import { Content } from "./style";
+import { CustomButton as Button } from "../../components/Button";
+import { useEffect, useState } from 'react';
+import { CardContainer } from "../../components/Card";
+import { createTask, getTasks, markTaskAsCompleted } from "../../services/api";
 
 export const Main = () => {
     const [titleInput, setTitleInput] = useState<string>('');
     const [contentInput, setContentInput] = useState<string>('');
+    const [tasks, setTasks] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const tasksData = await getTasks();
+                setTasks(tasksData);
+            } catch (error) {
+                console.error('error fetching tasks:', error);
+            }
+        };
+
+        fetchTasks();
+    }, []);
+
+    const handleAddTask = async () => {
+        try {
+            const newTask = await createTask({ title: titleInput, description: contentInput }); // Remover userId
+            setTasks([...tasks, newTask]);
+            setTitleInput('');
+            setContentInput('');
+        } catch (error) {
+            console.error('failed to add task:', error);
+        }
+    };
+
+    const handleMarkAsCompleted = async (taskId: number, isCompleted: boolean) => {
+        try {
+            await markTaskAsCompleted(taskId, !isCompleted);
+            setTasks(tasks.map(task =>
+                task.id === taskId ? { ...task, isCompleted: !isCompleted } : task
+            ));
+        } catch (error) {
+            console.error('Failed to mark task as completed:', error);
+        }
+    };
 
     return (
         <Content>
             <div className="inputArea">
                 <TextField
+                    required
                     value={titleInput}
-                    onChange={e => {
-                        setTitleInput(e.target.value)
-                    }} 
-                    className="inputTitle" variant="standard" color="secondary" placeholder="insert your task title" fullWidth />
-                <TextField 
+                    onChange={e => setTitleInput(e.target.value)}
+                    className="inputTitle"
+                    variant="standard"
+                    color="secondary"
+                    placeholder="Insert your task title"
+                    fullWidth
+                />
+                <TextField
+                    required
                     value={contentInput}
-                    onChange={e => {
-                        setContentInput(e.target.value)
-                    }} 
-                    className="inputContent" color="secondary" id="filled-hidden-label-normal" placeholder="insert your task content" multiline fullWidth />
-                <Button className="btnInput" color="secondary" variant="contained">add task</Button>
+                    onChange={e => setContentInput(e.target.value)}
+                    className="inputContent"
+                    color="secondary"
+                    placeholder="Insert your task content"
+                    multiline
+                    fullWidth
+                />
+                <Button onClick={handleAddTask} className="btnInput" color="secondary" variant="contained">
+                    Add Task
+                </Button>
             </div>
             <div className="contentArea">
                 <List
@@ -39,15 +86,20 @@ export const Main = () => {
                     }}
                     subheader={<li />}
                 >
-                    {[0, 1, 2, 3, 4].map((sectionId) => (
-                        <li key={`section-${sectionId}`}>
+                    {tasks.map((task) => (
+                        <li key={task.id}>
                             <ul>
-                                <CardContainer title="Tarefa" content="Teste" finish={true}/>
+                                <CardContainer
+                                    title={task.title}
+                                    description={task.description}
+                                    finish={task.isCompleted}
+                                    onComplete={() => handleMarkAsCompleted(task.id, task.isCompleted)}
+                                />
                             </ul>
                         </li>
                     ))}
                 </List>
             </div>
         </Content>
-    )
-}
+    );
+};

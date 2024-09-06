@@ -104,7 +104,7 @@ export const Register: React.FC = () => {
         const emailError = validateEmail(formValues.email);
         const passwordError = validatePassword(formValues.password);
         const confirmPasswordError = validateConfirmPassword(formValues.password, formValues.confirmPassword);
-
+    
         if (nameError || emailError || passwordError || confirmPasswordError) {
             setFormErrors({
                 name: nameError,
@@ -116,15 +116,16 @@ export const Register: React.FC = () => {
             try {
                 const username = formValues.email.split('@')[0];
                 console.log(username)
-
+    
                 await registerUser({
                     name: formValues.name,
                     username: username,
                     email: formValues.email,
                     password: formValues.password,
                 });
-                navigate('/main');
-                console.log('User registered successfully');
+    
+                navigate('/login');
+                console.log('user registered successfully');
             } catch (error) {
                 console.error(error);
             }

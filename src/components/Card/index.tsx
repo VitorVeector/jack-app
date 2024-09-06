@@ -2,11 +2,12 @@ import { Card, CardActionArea, CardActions, CardContent, Checkbox, Typography } 
 
 interface ICardConteiner{
     title: string,
-    content: string,
-    finish?: boolean
+    description: string,
+    finish?: boolean;
+    onComplete?: () => void; 
 }
 
-export const CardContainer:React.FC<ICardConteiner> = ({title, content, finish}) => {
+export const CardContainer:React.FC<ICardConteiner> = ({title, description, finish, onComplete}) => {
     return (
         <Card sx={{ width: '100%', borderRadius: '16px',boxShadow: '0 0 16px #666'}}>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -15,11 +16,16 @@ export const CardContainer:React.FC<ICardConteiner> = ({title, content, finish})
                         {title}
                     </Typography>
                     <Typography color="darkorchid" variant="body2" sx={{ color: 'text.secondary'}}>
-                        {content}
+                        {description}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Checkbox color='secondary' size="large" />
+                <Checkbox
+                        color='secondary'
+                        size="large"
+                        checked={finish}
+                        onChange={onComplete}
+                    />
                 </CardActions>
             </CardActionArea>
         </Card>
